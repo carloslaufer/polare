@@ -1,0 +1,692 @@
+@prefix : <http://purl.org/pol/agent#> .
+@prefix gn: <http://www.geonames.org/ontology#> .
+@prefix geo: <http://www.geonames.org/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rel: <http://purl.org/vocab/relationship/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://purl.org/pol/agent#> .
+
+<http://purl.org/pol/agent#> rdf:type owl:Ontology ;
+                             
+                             owl:imports geo:ontology ,
+                                         <http://www.w3.org/2004/02/skos/core> ,
+                                         org: ,
+                                         foaf: .
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+###  http://www.w3.org/2001/XMLSchema#date
+
+xsd:date rdf:type rdfs:Datatype .
+
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://purl.org/pol/agent#directRelTypeFromTo
+
+:directRelTypeFromTo rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:domain :DirectRelationship ;
+                     
+                     rdfs:range :DirectRelationshipConcept .
+
+
+
+###  http://purl.org/pol/agent#directRelTypeToFrom
+
+:directRelTypeToFrom rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:domain :DirectRelationship ;
+                     
+                     rdfs:range :DirectRelationshipConcept .
+
+
+
+###  http://purl.org/pol/agent#hasJurisdiction
+
+:hasJurisdiction rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:range gn:Feature ;
+                 
+                 rdfs:domain org:Post .
+
+
+
+###  http://purl.org/pol/agent#hasPost
+
+:hasPost rdf:type owl:ObjectProperty ;
+         
+         rdfs:domain org:Membership ;
+         
+         rdfs:range org:Post .
+
+
+
+###  http://purl.org/pol/agent#hasPostSubstitute
+
+:hasPostSubstitute rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:subPropertyOf :hasPost .
+
+
+
+###  http://purl.org/pol/agent#hasProv
+
+:hasProv rdf:type owl:ObjectProperty ;
+         
+         rdfs:range prov:Entity .
+
+
+
+###  http://purl.org/pol/agent#hasReferred
+
+:hasReferred rdf:type owl:ObjectProperty ;
+             
+             rdfs:domain :Referral ;
+             
+             rdfs:range foaf:Person ;
+             
+             owl:propertyChainAxiom ( :refersTo
+                                      [ owl:inverseOf org:hasMembership
+                                      ]
+                                    ) .
+
+
+
+###  http://purl.org/pol/agent#hasReferrer
+
+:hasReferrer rdf:type owl:ObjectProperty ;
+             
+             rdfs:domain :Referral ;
+             
+             owl:inverseOf :isReferrer ;
+             
+             rdfs:range foaf:Agent .
+
+
+
+###  http://purl.org/pol/agent#inDirectRelationshipScheme
+
+:inDirectRelationshipScheme rdf:type owl:ObjectProperty ;
+                            
+                            rdfs:domain :DirectRelationshipConcept ;
+                            
+                            rdfs:range :DirectRelationshipConceptScheme ;
+                            
+                            rdfs:subPropertyOf skos:inScheme .
+
+
+
+###  http://purl.org/pol/agent#inOrgClassificationScheme
+
+:inOrgClassificationScheme rdf:type owl:ObjectProperty ;
+                           
+                           rdfs:domain :OrgClassificationConcept ;
+                           
+                           rdfs:range :OrgClassificationConceptScheme ;
+                           
+                           rdfs:subPropertyOf skos:inScheme .
+
+
+
+###  http://purl.org/pol/agent#inOrgRoleScheme
+
+:inOrgRoleScheme rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:range :OrgRoleConceptScheme ;
+                 
+                 rdfs:subPropertyOf skos:inScheme ;
+                 
+                 rdfs:domain org:Role .
+
+
+
+###  http://purl.org/pol/agent#isReferrer
+
+:isReferrer rdf:type owl:ObjectProperty ;
+            
+            rdfs:range :Referral ;
+            
+            rdfs:domain foaf:Agent .
+
+
+
+###  http://purl.org/pol/agent#occupies
+
+:occupies rdf:type owl:ObjectProperty ;
+          
+          rdfs:range org:Post ;
+          
+          rdfs:domain foaf:Person ;
+          
+          owl:propertyChainAxiom ( org:hasMembership
+                                   :hasPost
+                                 ) .
+
+
+
+###  http://purl.org/pol/agent#refers
+
+:refers rdf:type owl:ObjectProperty ;
+        
+        rdfs:domain foaf:Agent ;
+        
+        rdfs:range foaf:Person ;
+        
+        owl:propertyChainAxiom ( :isReferrer
+                                 :hasReferred
+                               ) .
+
+
+
+###  http://purl.org/pol/agent#refersTo
+
+:refersTo rdf:type owl:ObjectProperty ;
+          
+          rdfs:domain :Referral ;
+          
+          rdfs:range org:Membership .
+
+
+
+###  http://purl.org/pol/agent#relationFrom
+
+:relationFrom rdf:type owl:ObjectProperty ;
+              
+              rdfs:domain :DirectRelationship ;
+              
+              rdfs:range foaf:Person .
+
+
+
+###  http://purl.org/pol/agent#relationTo
+
+:relationTo rdf:type owl:ObjectProperty ;
+            
+            rdfs:domain :DirectRelationship ;
+            
+            rdfs:range foaf:Person .
+
+
+
+###  http://purl.org/pol/agent#singletonPropertyOf
+
+:singletonPropertyOf rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.geonames.org/ontology#locatedIn
+
+gn:locatedIn rdf:type owl:ObjectProperty ;
+             
+             rdfs:range gn:Feature .
+
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#type
+
+rdf:type rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.w3.org/2004/02/skos/core#broader
+
+skos:broader rdf:type owl:ObjectProperty ;
+             
+             rdfs:domain skos:Concept ;
+             
+             rdfs:range skos:Concept .
+
+
+
+###  http://www.w3.org/ns/org#classification
+
+org:classification rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:range skos:Concept ;
+                   
+                   rdfs:domain org:Organization .
+
+
+
+###  http://www.w3.org/ns/org#hasMembership
+
+org:hasMembership rdf:type owl:ObjectProperty ;
+                  
+                  rdfs:range org:Membership ;
+                  
+                  rdfs:domain foaf:Agent .
+
+
+
+###  http://www.w3.org/ns/org#hasPost
+
+org:hasPost rdf:type owl:ObjectProperty ;
+            
+            rdfs:domain org:Organization ;
+            
+            rdfs:range org:Post .
+
+
+
+###  http://www.w3.org/ns/org#member
+
+org:member rdf:type owl:ObjectProperty ;
+           
+           rdfs:subPropertyOf owl:topObjectProperty ;
+           
+           rdfs:domain org:Membership ;
+           
+           rdfs:range foaf:Agent .
+
+
+
+###  http://www.w3.org/ns/org#organization
+
+org:organization rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:range org:Organization .
+
+
+
+###  http://www.w3.org/ns/org#postIn
+
+org:postIn rdf:type owl:ObjectProperty ;
+           
+           rdfs:range org:Organization ;
+           
+           rdfs:domain org:Post .
+
+
+
+###  http://www.w3.org/ns/org#role
+
+org:role rdf:type owl:ObjectProperty ;
+         
+         rdfs:range org:Role .
+
+
+
+###  http://www.w3.org/ns/org#subOrganizationOf
+
+org:subOrganizationOf rdf:type owl:ObjectProperty ,
+                               owl:TransitiveProperty ;
+                      
+                      rdfs:range org:Organization ;
+                      
+                      rdfs:domain org:Organization .
+
+
+
+###  http://www.w3.org/ns/prov#actedOnBehalfOf
+
+prov:actedOnBehalfOf rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:range prov:Agent ;
+                     
+                     rdfs:domain prov:Agent ;
+                     
+                     owl:propertyChainAxiom ( [ owl:inverseOf prov:wasAttributedTo
+                                              ]
+                                              prov:wasGeneratedBy
+                                              [ owl:inverseOf prov:hadActivity
+                                              ]
+                                              prov:agent
+                                            ) .
+
+
+
+###  http://www.w3.org/ns/prov#agent
+
+prov:agent rdf:type owl:ObjectProperty ;
+           
+           rdfs:range prov:Agent ;
+           
+           rdfs:domain prov:AgentInfluence .
+
+
+
+###  http://www.w3.org/ns/prov#hadActivity
+
+prov:hadActivity rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.w3.org/ns/prov#hadPrimarySource
+
+prov:hadPrimarySource rdf:type owl:ObjectProperty ;
+                      
+                      rdfs:domain prov:Entity ;
+                      
+                      rdfs:range prov:Entity .
+
+
+
+###  http://www.w3.org/ns/prov#hadRole
+
+prov:hadRole rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.w3.org/ns/prov#qualifiedAssociation
+
+prov:qualifiedAssociation rdf:type owl:ObjectProperty ;
+                          
+                          rdfs:domain prov:Activity ;
+                          
+                          rdfs:range prov:Association ;
+                          
+                          rdfs:subPropertyOf prov:qualifiedInfluence .
+
+
+
+###  http://www.w3.org/ns/prov#qualifiedDelegation
+
+prov:qualifiedDelegation rdf:type owl:ObjectProperty ;
+                         
+                         rdfs:domain prov:Agent ;
+                         
+                         rdfs:range prov:Delegation ;
+                         
+                         rdfs:subPropertyOf prov:qualifiedInfluence .
+
+
+
+###  http://www.w3.org/ns/prov#qualifiedInfluence
+
+prov:qualifiedInfluence rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.w3.org/ns/prov#wasAttributedTo
+
+prov:wasAttributedTo rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:range prov:Agent ;
+                     
+                     rdfs:domain prov:Entity .
+
+
+
+###  http://www.w3.org/ns/prov#wasGeneratedBy
+
+prov:wasGeneratedBy rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:range prov:Activity ;
+                    
+                    rdfs:domain prov:Entity .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://purl.org/dc/terms/bibliographicCitation
+
+dcterms:bibliographicCitation rdf:type owl:DatatypeProperty .
+
+
+
+###  http://purl.org/dc/terms/description
+
+dcterms:description rdf:type owl:DatatypeProperty .
+
+
+
+###  http://purl.org/dc/terms/identifier
+
+dcterms:identifier rdf:type owl:DatatypeProperty .
+
+
+
+###  http://schema.org/endDate
+
+schema:endDate rdf:type owl:DatatypeProperty ;
+               
+               rdfs:range xsd:date .
+
+
+
+###  http://schema.org/startDate
+
+schema:startDate rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:range xsd:date .
+
+
+
+###  http://schema.org/validFrom
+
+schema:validFrom rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:range xsd:date .
+
+
+
+###  http://schema.org/validUntil
+
+schema:validUntil rdf:type owl:DatatypeProperty ;
+                  
+                  rdfs:range xsd:date .
+
+
+
+###  http://www.w3.org/2000/01/rdf-schema#label
+
+rdfs:label rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.w3.org/2004/02/skos/core#prefLabel
+
+skos:prefLabel rdf:type owl:DatatypeProperty .
+
+
+
+###  http://xmlns.com/foaf/0.1/name
+
+foaf:name rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://purl.org/pol/agent#DirectRelationship
+
+:DirectRelationship rdf:type owl:Class .
+
+
+
+###  http://purl.org/pol/agent#DirectRelationshipConcept
+
+:DirectRelationshipConcept rdf:type owl:Class ;
+                           
+                           rdfs:subClassOf skos:Concept .
+
+
+
+###  http://purl.org/pol/agent#DirectRelationshipConceptScheme
+
+:DirectRelationshipConceptScheme rdf:type owl:Class ;
+                                 
+                                 rdfs:subClassOf skos:ConceptScheme .
+
+
+
+###  http://purl.org/pol/agent#OrgClassificationConcept
+
+:OrgClassificationConcept rdf:type owl:Class ;
+                          
+                          rdfs:subClassOf skos:Concept .
+
+
+
+###  http://purl.org/pol/agent#OrgClassificationConceptScheme
+
+:OrgClassificationConceptScheme rdf:type owl:Class ;
+                                
+                                rdfs:subClassOf skos:ConceptScheme .
+
+
+
+###  http://purl.org/pol/agent#OrgRoleConceptScheme
+
+:OrgRoleConceptScheme rdf:type owl:Class ;
+                      
+                      rdfs:subClassOf skos:ConceptScheme .
+
+
+
+###  http://purl.org/pol/agent#Referral
+
+:Referral rdf:type owl:Class .
+
+
+
+###  http://schema.org/Date
+
+schema:Date rdf:type owl:Class .
+
+
+
+###  http://www.geonames.org/ontology#Feature
+
+gn:Feature rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+
+rdf:Property rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/2004/02/skos/core#Concept
+
+skos:Concept rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/org#Membership
+
+org:Membership rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/org#Organization
+
+org:Organization rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/org#Post
+
+org:Post rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/org#Role
+
+org:Role rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/prov#Activity
+
+prov:Activity rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/prov#Agent
+
+prov:Agent rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/prov#AgentInfluence
+
+prov:AgentInfluence rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/prov#Association
+
+prov:Association rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf prov:AgentInfluence .
+
+
+
+###  http://www.w3.org/ns/prov#Delegation
+
+prov:Delegation rdf:type owl:Class ;
+                
+                rdfs:subClassOf prov:AgentInfluence .
+
+
+
+###  http://www.w3.org/ns/prov#Entity
+
+prov:Entity rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/prov#Role
+
+prov:Role rdf:type owl:Class .
+
+
+
+###  http://xmlns.com/foaf/0.1/Agent
+
+foaf:Agent rdf:type owl:Class .
+
+
+
+###  http://xmlns.com/foaf/0.1/Person
+
+foaf:Person rdf:type owl:Class ;
+            
+            rdfs:subClassOf foaf:Agent .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+
