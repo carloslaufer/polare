@@ -106,3 +106,8 @@ venv.bak/
 #MAC
 .DS_Store
 
+#Polare ignore folders
+assets/crawlers/slnp_photos/
+assets/crawlers/slnp_wild1/
+assets/crawlers/slnp_wild2/
+
